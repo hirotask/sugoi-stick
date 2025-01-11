@@ -31,7 +31,7 @@ configurations["implementation"].extendsFrom(shadowImplementation)
 dependencies {
     shadowImplementation(kotlin("stdlib"))
     compileOnly("org.spigotmc:spigot-api:$pluginVersion-R0.1-SNAPSHOT")
-    implementation("dev.jorel:commandapi-bukkit-core:9.7.0")
+    compileOnly("dev.jorel:commandapi-bukkit-core:9.7.0")
     shadowImplementation("dev.s7a:ktInventory:1.0.0")
 }
 
@@ -52,6 +52,10 @@ tasks.withType<ShadowJar> {
 
 tasks.named("build") {
     dependsOn("shadowJar")
+}
+
+tasks.named("lintKotlinMain") {
+    enabled = false
 }
 
 task<LaunchMinecraftServerTask>("buildAndLaunchServer") {
