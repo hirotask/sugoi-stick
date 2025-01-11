@@ -22,6 +22,7 @@ repositories {
     mavenCentral()
     maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven(url = "https://oss.sonatype.org/content/groups/public/")
+    maven(url = "https://repo.codemc.org/repository/maven-public/")
 }
 
 val shadowImplementation: Configuration by configurations.creating
@@ -30,9 +31,8 @@ configurations["implementation"].extendsFrom(shadowImplementation)
 dependencies {
     shadowImplementation(kotlin("stdlib"))
     compileOnly("org.spigotmc:spigot-api:$pluginVersion-R0.1-SNAPSHOT")
-    shadowImplementation(api("com.github.sya-ri:EasySpigotAPI:2.4.0") {
-        exclude(group = "org.spigotmc", module = "spigot-api")
-    })
+    implementation("dev.jorel:commandapi-bukkit-core:9.7.0")
+    shadowImplementation("dev.s7a:ktInventory:1.0.0")
 }
 
 configure<BukkitPluginDescription> {
@@ -59,6 +59,10 @@ task<LaunchMinecraftServerTask>("buildAndLaunchServer") {
     doFirst {
         copy {
             from(buildDir.resolve("libs/${project.name}.jar"))
+            into(buildDir.resolve("MinecraftServer/plugins"))
+        }
+        copy {
+            from(projectDir.resolve("libs/"))
             into(buildDir.resolve("MinecraftServer/plugins"))
         }
     }
